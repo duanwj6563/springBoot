@@ -10,7 +10,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
-import com.sunland.domain.SecurityUser;
 import com.sunland.domain.User;
 import com.sunland.repository.UserRepository;
 
@@ -25,11 +24,9 @@ public class CustomUserDetailsService implements UserDetailsService {
 			throw new UsernameNotFoundException("UserName " + userName + " not found");
 
 		}
-		 // SecurityUser实现UserDetails
-        SecurityUser securityUser = new SecurityUser(user);
 //        Collection<SimpleGrantedAuthority> authorities = new ArrayList<SimpleGrantedAuthority>();
 //        authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
-        return securityUser; 
+        return user;
 
 	}
 
