@@ -6,9 +6,8 @@
 	<link rel="stylesheet" th:href="@{/bootstrap/css/bootstrap.min.css}"/>
 </head>
 <body>
-
-<nav class="navbar navbar-inverse navbar-fixed-top">
-	<div class="container">
+<div class="container" align="center">
+	<nav class="navbar navbar-inverse navbar-fixed-top">
 		<div class="navbar-header">
 			<a class="navbar-brand" href="#">demo</a>
 		</div>
@@ -18,10 +17,8 @@
 
 			</ul>
 		</div><!--/.nav-collapse -->
-	</div>
-</nav>
-<div class="container" align="center">
-	<div class="starter-template">
+	</nav>
+	<div class="starter-template" style=" margin-top: 65px;">
 		<p th:if="${param.logout}" class="bg-warning">已成功注销</p><!-- 1 -->
 		<p th:if="${param.error}" class="bg-danger">有错误，请重试</p> <!-- 2 -->
 		<h2>使用账号密码登录</h2>
