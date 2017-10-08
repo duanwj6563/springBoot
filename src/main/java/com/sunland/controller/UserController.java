@@ -7,12 +7,14 @@ package com.sunland.controller;
 
 import com.sunland.domain.User;
 import com.sunland.repository.UserRepository;
+import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -28,6 +30,7 @@ public class UserController {
      * @return
      */
     @GetMapping
+    @ApiOperation(value = "查看所有用户信息")
     public List<User> usersList() {
         return userRepository.findAll();
     }
@@ -48,17 +51,11 @@ public class UserController {
     /**
      * 增加一个用户
      *
-     * @param name
-     * @param phone
      * @return
      */
     @PostMapping()
-    public User userAdd(@RequestParam("name") String name, @RequestParam("phone") Integer phone) {
-        User user = new User();
-        user.setUserName(name);
-        user.setPhone(phone);
+    public User userAdd(@Valid @RequestBody User user) {
         return userRepository.save(user);
-
     }
 
     /**

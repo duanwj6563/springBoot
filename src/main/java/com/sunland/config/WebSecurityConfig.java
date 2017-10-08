@@ -18,11 +18,22 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
 import com.sunland.service.CustomUserDetailsService;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
+import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
+
+import javax.sql.DataSource;
+
 
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+   @Autowired
+	private DataSource dataSource;
+   @Autowired
+   private UserDetailsService userDetailsService;
 	@Bean
 	@Override
 	protected AuthenticationManager authenticationManager() throws Exception {
@@ -40,10 +51,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		.loginPage("/login")
 		.defaultSuccessUrl("/hello")//登录成功以后跳转页面
 		.permitAll()
+				.and()
+				.rememberMe()
+				.tokenRepository(persistentTokenRepository())
+				.tokenValiditySeconds(60*60)
+				.userDetailsService(userDetailsService)
+				.and()
+		.logout().permitAll()
 		.and()
-		.logout().permitAll();
-		// super.configure(http);
-		http
         .csrf().disable();//解决security post请求不到问题
 	}
 	@Override
@@ -58,7 +73,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		auth.userDetailsService(customUserDetailsService())
 		.passwordEncoder(passwordEncoder());
 	}
-	
+
+	/**
+	 *记住我功能
+	 * @return
+	 */
+	@Bean
+	public PersistentTokenRepository persistentTokenRepository(){
+		JdbcTokenRepositoryImpl tokenRepository=new JdbcTokenRepositoryImpl();
+		tokenRepository.setDataSource(dataSource);
+		//tokenRepository.setCreateTableOnStartup(true);
+		return tokenRepository;
+	}
 	 /**
      * 设置用户密码的加密方式为MD5加密
      * @return

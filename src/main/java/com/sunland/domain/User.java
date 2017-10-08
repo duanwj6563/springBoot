@@ -5,6 +5,8 @@
  */
 package com.sunland.domain;
 
+import io.swagger.annotations.ApiModelProperty;
+import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -21,9 +23,11 @@ public class User implements UserDetails {
     @Id
     @GeneratedValue
     private Integer id;
+    @NotBlank(message = "密码不能为空")
     private String userName;
     private String passWord;
     private Integer age;
+    @ApiModelProperty(value = "手机号")
     private Integer phone;
 
     public Integer getId() {
